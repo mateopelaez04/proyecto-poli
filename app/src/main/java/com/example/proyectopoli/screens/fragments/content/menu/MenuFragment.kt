@@ -34,6 +34,7 @@ fun MenuFragment(
     val menuItems = listOf(
         MenuItem(id = "inicio", title = "Inicio", icon = Icons.Default.AccountCircle),
         MenuItem(id = "galeria", title = "Galeria", icon = Icons.Default.Image),
+        MenuItem(id = "web", title = "Pagina Web", icon = Icons.Default.Image),
         MenuItem(id = "archivos", title = "Archivos", icon = Icons.Default.PictureAsPdf),
     )
 
