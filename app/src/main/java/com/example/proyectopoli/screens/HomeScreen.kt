@@ -67,7 +67,7 @@ fun HomeScreen() {
                 TopAppBar(
                     title = {
                         Text(
-                            text = "MiCurriculumYa!",
+                            text = "MiCurriculumYa12!",
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center,
