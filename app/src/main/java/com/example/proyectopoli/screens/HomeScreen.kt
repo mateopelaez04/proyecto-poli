@@ -84,7 +84,7 @@ fun HomeScreen() {
                             }
                         }) {
                             Icon(
-                                imageVector = Icons.Default.Image,
+                                imageVector = Icons.Default.Menu,
                                 contentDescription = "Menu"
                             )
                         }
