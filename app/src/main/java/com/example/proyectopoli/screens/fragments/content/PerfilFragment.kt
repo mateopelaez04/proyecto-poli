@@ -32,14 +32,14 @@ fun PerfilFragment() {
 
     Column(
         modifier = Modifier
-            .fillMaxSize() // Esto es clave para que funcione el weight()
+            .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Column(
             modifier = Modifier
                 .weight(1f)
-                .verticalScroll(rememberScrollState()) // Esto permite scroll en los campos
+                .verticalScroll(rememberScrollState())
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_profile),
@@ -94,7 +94,7 @@ fun PerfilFragment() {
             }
         }
 
-        // WebView ocupa el espacio restante al final
+       
         WebViewContainer(url = searchUrl)
     }
 }
@@ -155,6 +155,6 @@ fun WebViewContainer(url: String) {
         },
         modifier = Modifier
             .fillMaxWidth()
-            .height(300.dp) // Puedes cambiar a .weight(1f) si lo metes dentro del Column padre
+            .height(300.dp) 
     )
 }
