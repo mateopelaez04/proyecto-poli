@@ -1,3 +1,5 @@
+en PerfilFragment.kt
+
 package com.example.proyectopoli.screens.fragments.content
 
 import android.webkit.WebResourceRequest
@@ -141,12 +143,14 @@ fun ProfileField(title: String, isLarge: Boolean = false) {
 
 @Composable
 fun WebViewContainer(url: String) {
+    var webView: WebView? = null
+
     AndroidView(
         factory = { context ->
             WebView(context).apply {
                 webViewClient = object : WebViewClient() {
                     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-                        return false // Permitir la carga normal dentro del WebView
+                        return false
                     }
                 }
                 settings.javaScriptEnabled = true
@@ -155,8 +159,12 @@ fun WebViewContainer(url: String) {
                 settings.useWideViewPort = true
                 settings.allowContentAccess = true
                 settings.allowFileAccess = true
-                loadUrl(url)
+                webView = this
+                loadUrl(url) // se carga inicialmente
             }
+        },
+        update = { view ->
+            view.loadUrl(url) // se recarga cuando cambia la URL
         },
         modifier = Modifier
             .fillMaxWidth()
