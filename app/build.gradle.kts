@@ -67,4 +67,8 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
+    implementation("androidx.compose.ui:ui:1.5.0") // o la versión que estés usando
+    implementation("androidx.compose.material:material:1.5.0")
+    implementation ("androidx.compose.ui:ui-tooling-preview:1.5.0")
+    implementation ("androidx.activity:activity-compose:1.8.0")
 }
