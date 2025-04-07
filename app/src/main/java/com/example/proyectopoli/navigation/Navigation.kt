@@ -11,7 +11,7 @@ import com.example.proyectopoli.screens.fragments.content.WebFragment
 fun ContentNavigation(selectedOption: String) {
     when (selectedOption) {
         "inicio" -> PerfilFragment()
-        "galeria" -> FotosFragment()
+        "fotos" -> FotosFragment()
         "archivos" -> VideosFragment()
         "web" -> WebFragment()
         "botones" -> BotonesFragment()

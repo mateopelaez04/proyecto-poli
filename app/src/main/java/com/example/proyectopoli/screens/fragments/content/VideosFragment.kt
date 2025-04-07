@@ -1,28 +1,27 @@
 package com.example.proyectopoli.screens.fragments.content
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import android.net.Uri
+import android.widget.MediaController
+import android.widget.VideoView
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.viewinterop.AndroidView
+import com.example.proyectopoli.R
+import androidx.core.net.toUri
 
 @Composable
 fun VideosFragment() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "Se ha seleccionado la opción Archivos",
-            style = MaterialTheme.typography.headlineMedium,
-            textAlign = TextAlign.Center
-        )
-    }
+    val context = LocalContext.current
+    AndroidView(factory = {
+        val videoView = VideoView(it)
+        val uri = "android.resource://${it.packageName}/${R.raw.poli_video}".toUri()
+        videoView.setVideoURI(uri)
+
+        val mediaController = MediaController(it)
+        mediaController.setAnchorView(videoView)
+        videoView.setMediaController(mediaController)
+        videoView.start()
+
+        videoView
+    })
 }
