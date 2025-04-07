@@ -1,5 +1,3 @@
-en PerfilFragment.kt
-
 package com.example.proyectopoli.screens.fragments.content
 
 import android.webkit.WebResourceRequest
