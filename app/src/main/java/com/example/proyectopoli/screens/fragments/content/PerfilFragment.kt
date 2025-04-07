@@ -27,81 +27,74 @@ import com.example.proyectopoli.R
 
 @Composable
 fun PerfilFragment() {
-    val scrollState = rememberScrollState()
     var searchQuery by remember { mutableStateOf("") }
     var searchUrl by remember { mutableStateOf("https://www.google.com") }
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(scrollState),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxSize() // Esto es clave para que funcione el weight()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        // Imagen de perfil
-        Image(
-            painter = painterResource(id = R.drawable.ic_profile),
-            contentDescription = "Imagen de perfil",
+        Column(
             modifier = Modifier
-                .size(150.dp)
-                .padding(8.dp),
-            contentScale = ContentScale.Crop
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Datos del usuario con campos editables
-        ProfileField(title = "Nombre Completo")
-        ProfileField(title = "Edad")
-        ProfileField(title = "Sexo")
-        ProfileField(title = "Dirección de residencia")
-        ProfileField(title = "Acerca de mí", isLarge = true)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Secciones
-        ProfileField(title = "Experiencias laborales", isLarge = true)
-        ProfileField(title = "Estudios", isLarge = true)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Campo para realizar una búsqueda en Google
-        Text(
-            text = "Buscador de Google",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+                .weight(1f)
+                .verticalScroll(rememberScrollState()) // Esto permite scroll en los campos
         ) {
-            Box(
+            Image(
+                painter = painterResource(id = R.drawable.ic_profile),
+                contentDescription = "Imagen de perfil",
                 modifier = Modifier
-                    .weight(1f)
-                    .height(40.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(Color.LightGray)
-                    .padding(horizontal = 8.dp),
-                contentAlignment = Alignment.CenterStart
+                    .size(150.dp)
+                    .padding(8.dp),
+                contentScale = ContentScale.Crop
+            )
+
+            ProfileField(title = "Nombre Completo")
+            ProfileField(title = "Edad")
+            ProfileField(title = "Sexo")
+            ProfileField(title = "Dirección de residencia")
+            ProfileField(title = "Acerca de mí", isLarge = true)
+            ProfileField(title = "Experiencias laborales", isLarge = true)
+            ProfileField(title = "Estudios", isLarge = true)
+
+            Text(
+                text = "Buscador de Google",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                BasicTextField(
-                    value = searchQuery,
-                    onValueChange = { searchQuery = it },
-                    textStyle = TextStyle(fontSize = 14.sp, color = Color.Black),
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-            Spacer(modifier = Modifier.width(8.dp))
-            Button(onClick = {
-                searchUrl = "https://www.google.com/search?q=${searchQuery.replace(" ", "+")}"
-            }) {
-                Text("Buscar")
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(40.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(Color.LightGray)
+                        .padding(horizontal = 8.dp),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    BasicTextField(
+                        value = searchQuery,
+                        onValueChange = { searchQuery = it },
+                        textStyle = TextStyle(fontSize = 14.sp, color = Color.Black),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Button(onClick = {
+                    searchUrl = "https://www.google.com/search?q=${searchQuery.replace(" ", "+")}"
+                }) {
+                    Text("Buscar")
+                }
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
 
-        // WebView para mostrar la búsqueda en Google
+        // WebView ocupa el espacio restante al final
         WebViewContainer(url = searchUrl)
     }
 }
@@ -135,14 +128,11 @@ fun ProfileField(title: String, isLarge: Boolean = false) {
                     .padding(8.dp)
             )
         }
-        Spacer(modifier = Modifier.height(8.dp))
     }
 }
 
 @Composable
 fun WebViewContainer(url: String) {
-    var webView: WebView? = null
-
     AndroidView(
         factory = { context ->
             WebView(context).apply {
@@ -157,15 +147,14 @@ fun WebViewContainer(url: String) {
                 settings.useWideViewPort = true
                 settings.allowContentAccess = true
                 settings.allowFileAccess = true
-                webView = this
-                loadUrl(url) // se carga inicialmente
+                loadUrl(url)
             }
         },
         update = { view ->
-            view.loadUrl(url) // se recarga cuando cambia la URL
+            view.loadUrl(url)
         },
         modifier = Modifier
             .fillMaxWidth()
-            .height(300.dp)
+            .height(300.dp) // Puedes cambiar a .weight(1f) si lo metes dentro del Column padre
     )
 }
