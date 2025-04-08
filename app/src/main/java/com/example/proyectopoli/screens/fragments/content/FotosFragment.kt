@@ -15,7 +15,9 @@ import com.example.proyectopoli.R
 @Composable
 fun FotosFragment() {
     val fotos = listOf(
-        R.drawable.cv_demo_image // puedes agregar más imágenes aquí si las tienes
+        R.drawable.cv_demo_image, // puedes agregar más imágenes aquí si las tienes
+        R.drawable.poli_1,
+        R.drawable.poli_2
     )
 
     LazyColumn(
