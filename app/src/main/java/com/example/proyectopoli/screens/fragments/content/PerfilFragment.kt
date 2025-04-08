@@ -1,9 +1,9 @@
 package com.example.proyectopoli.screens.fragments.content
 
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import android.webkit.WebViewClient
-import androidx.compose.foundation.Image
+import androidx.compose.ui.layout.ContentScale
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -16,19 +16,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
-import com.example.proyectopoli.R
+import coil.compose.AsyncImage
 
 @Composable
 fun PerfilFragment() {
-    var searchQuery by remember { mutableStateOf("") }
-    var searchUrl by remember { mutableStateOf("https://www.google.com") }
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        imageUri = uri
+    }
 
     Column(
         modifier = Modifier
@@ -41,14 +43,42 @@ fun PerfilFragment() {
                 .weight(1f)
                 .verticalScroll(rememberScrollState())
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_profile),
-                contentDescription = "Imagen de perfil",
+            Box(
                 modifier = Modifier
-                    .size(150.dp)
-                    .padding(8.dp),
-                contentScale = ContentScale.Crop
-            )
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    if (imageUri != null) {
+                        AsyncImage(
+                            model = imageUri,
+                            contentDescription = "Imagen seleccionada",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .size(150.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                        )
+                    } else {
+                        Box(
+                            modifier = Modifier
+                                .size(150.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(Color.LightGray),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text("Agregar imagen", color = Color.DarkGray)
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Button(onClick = {
+                        launcher.launch("image/*")
+                    }) {
+                        Text("Seleccionar imagen")
+                    }
+                }
+            }
 
             ProfileField(title = "Nombre Completo")
             ProfileField(title = "Edad")
@@ -57,45 +87,7 @@ fun PerfilFragment() {
             ProfileField(title = "Acerca de mí", isLarge = true)
             ProfileField(title = "Experiencias laborales", isLarge = true)
             ProfileField(title = "Estudios", isLarge = true)
-
-            Text(
-                text = "Buscador de Google",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black
-            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(40.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(Color.LightGray)
-                        .padding(horizontal = 8.dp),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    BasicTextField(
-                        value = searchQuery,
-                        onValueChange = { searchQuery = it },
-                        textStyle = TextStyle(fontSize = 14.sp, color = Color.Black),
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-                Spacer(modifier = Modifier.width(8.dp))
-                Button(onClick = {
-                    searchUrl = "https://www.google.com/search?q=${searchQuery.replace(" ", "+")}"
-                }) {
-                    Text("Buscar")
-                }
-            }
         }
-
-       
-        WebViewContainer(url = searchUrl)
     }
 }
 
@@ -115,46 +107,18 @@ fun ProfileField(title: String, isLarge: Boolean = false) {
                 .fillMaxWidth()
                 .height(if (isLarge) 100.dp else 40.dp)
                 .clip(RoundedCornerShape(8.dp))
-                .background(Color.LightGray)
-                .padding(horizontal = 8.dp),
-            contentAlignment = Alignment.CenterStart
+                .background(Color(0xFFEFEFEF)), // Gris más claro
+            contentAlignment = Alignment.TopStart
         ) {
             BasicTextField(
                 value = text,
                 onValueChange = { text = it },
                 textStyle = TextStyle(fontSize = 14.sp, color = Color.Black),
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
                     .padding(8.dp)
             )
         }
     }
 }
 
-@Composable
-fun WebViewContainer(url: String) {
-    AndroidView(
-        factory = { context ->
-            WebView(context).apply {
-                webViewClient = object : WebViewClient() {
-                    override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-                        return false
-                    }
-                }
-                settings.javaScriptEnabled = true
-                settings.domStorageEnabled = true
-                settings.loadsImagesAutomatically = true
-                settings.useWideViewPort = true
-                settings.allowContentAccess = true
-                settings.allowFileAccess = true
-                loadUrl(url)
-            }
-        },
-        update = { view ->
-            view.loadUrl(url)
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp) 
-    )
-}
