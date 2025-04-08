@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material.icons.filled.RadioButtonChecked
 import androidx.compose.material.icons.filled.Videocam
+import androidx.compose.material.icons.filled.Web
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -35,6 +36,8 @@ fun MenuFragment(
         MenuItem(id = "inicio", title = "Inicio", icon = Icons.Default.AccountCircle),
         MenuItem(id = "galeria", title = "Galeria", icon = Icons.Default.Image),
         MenuItem(id = "archivos", title = "Archivos", icon = Icons.Default.PictureAsPdf),
+        MenuItem(id = "videos", title = "Videos", icon = Icons.Default.Videocam),
+        MenuItem(id = "web", title = "Web", icon = Icons.Default.Web),
     )
 
     Column(
