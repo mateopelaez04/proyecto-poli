@@ -12,9 +12,9 @@ fun ContentNavigation(selectedOption: String) {
     when (selectedOption) {
         "inicio" -> PerfilFragment()
         "galeria" -> FotosFragment()
-        "archivos" -> VideosFragment()
+        "archivos" -> BotonesFragment()
         "web" -> WebFragment()
-        "botones" -> BotonesFragment()
+        "videos" -> VideosFragment()
         else -> PerfilFragment()
     }
 }

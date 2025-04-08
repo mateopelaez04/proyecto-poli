@@ -24,59 +24,16 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun VideosFragment() {
-    val context = LocalContext.current
-
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 32.dp, start = 16.dp, end = 16.dp),
-        horizontalAlignment = Alignment.Start
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Nombre del archivo (más grande y en negrita)
-            Text(
-                text = "curriculum.pdf",
-                fontWeight = FontWeight.Bold,
-                fontSize = 22.sp
-            )
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            // Ícono de descarga rojo
-            IconButton(onClick = {
-                copiarPDFaDescargas(context, "curriculum.pdf")
-            }) {
-                Icon(
-                    imageVector = Icons.Outlined.Download,
-                    contentDescription = "Descargar PDF",
-                    tint = Color.Red,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-        }
-    }
-}
-
-fun copiarPDFaDescargas(context: Context, curriculum: String) {
-    try {
-        val assetManager = context.assets
-        val inputStream = assetManager.open(curriculum)
-
-        val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-        val outFile = File(downloadsDir, curriculum)
-
-        val outputStream = FileOutputStream(outFile)
-
-        inputStream.copyTo(outputStream)
-
-        inputStream.close()
-        outputStream.close()
-
-        Toast.makeText(context, "PDF descargado en Descargas", Toast.LENGTH_LONG).show()
-    } catch (e: Exception) {
-        e.printStackTrace()
-        Toast.makeText(context, "Error al descargar el archivo", Toast.LENGTH_SHORT).show()
+        Text(
+            text = "Se ha seleccionado la opción Videos",
+            style = MaterialTheme.typography.headlineMedium,
+            textAlign = TextAlign.Center
+        )
     }
 }
