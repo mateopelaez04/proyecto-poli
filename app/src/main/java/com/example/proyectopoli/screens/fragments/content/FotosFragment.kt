@@ -1,5 +1,8 @@
 package com.example.proyectopoli.screens.fragments.content
 
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,12 +23,13 @@ fun FotosFragment() {
         R.drawable.poli_2
     )
 
-    LazyColumn(
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2), // 2 columnas
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(fotos) { foto ->
             Image(
@@ -33,9 +37,9 @@ fun FotosFragment() {
                 contentDescription = "Foto en galería",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp),
+                    .height(150.dp),
                 contentScale = ContentScale.Crop
-            )
-        }
+                )
+           }
     }
 }
