@@ -1,39 +1,34 @@
-package com.example.proyectopoli.screens.fragments.content
+package com.example.proyectopoli.screens.fragments.content.menu
 
-import android.content.Context
-import android.os.Environment
-import android.widget.Toast
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import android.net.Uri
+import android.widget.MediaController
+import android.widget.VideoView
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import java.io.File
-import java.io.FileOutputStream
-import androidx.compose.ui.graphics.Color
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Download
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
-
+import androidx.compose.ui.viewinterop.AndroidView
+import com.example.proyectopoli.R
 
 @Composable
 fun VideosFragment() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "Se ha seleccionado la opción Videos",
-            style = MaterialTheme.typography.headlineMedium,
-            textAlign = TextAlign.Center
-        )
-    }
+    val context = LocalContext.current
+
+    AndroidView(
+        modifier = Modifier.fillMaxSize(),
+        factory = { context ->
+            val videoView = VideoView(context)
+            val mediaController = MediaController(context)
+            mediaController.setAnchorView(videoView)
+
+            val videoUri = Uri.parse("android.resource://${context.packageName}/${R.raw.cv_demo_video_15s}")
+            videoView.setMediaController(mediaController)
+            videoView.setVideoURI(videoUri)
+            videoView.requestFocus()
+            videoView.start()
+
+            videoView
+        }
+    )
 }
+
